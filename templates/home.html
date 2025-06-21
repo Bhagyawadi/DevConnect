@@ -1,0 +1,13 @@
+{% extends 'base.html' %}
+{% block title %}Welcome to DevConnect{% endblock %}
+{% block content %}
+<div class="text-center mt-5">
+  <h1>Welcome to DevConnect</h1>
+  <p class="lead">Connect, share, and grow with fellow developers.</p>
+  {% if user.is_authenticated %}
+    <a href="{% url 'accounts:dashboard' %}" class="btn btn-primary">Go to Dashboard</a>
+  {% else %}
+    <a href="{% url 'accounts:signup' %}" class="btn btn-success">Get Started</a>
+  {% endif %}
+</div>
+{% endblock %}

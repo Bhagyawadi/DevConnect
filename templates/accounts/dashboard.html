@@ -1,0 +1,26 @@
+{% extends 'base.html' %}
+{% block title %}Dashboard{% endblock %}
+{% block content %}
+<h2>{{ request.user.username }}'s Dashboard</h2>
+<img src="{{ profile.avatar.url }}" width="100" class="rounded-circle mb-2">
+<p>{{ profile.bio }}</p>
+
+<hr>
+<h4>Your Articles</h4>
+<ul class="list-group">
+  {% for article in articles %}
+    <li class="list-group-item"><a href="{% url 'articles:detail' article.slug %}">{{ article.title }}</a></li>
+  {% empty %}
+    <li class="list-group-item">No articles yet.</li>
+  {% endfor %}
+</ul>
+
+<h4 class="mt-4">Your Questions</h4>
+<ul class="list-group">
+  {% for question in questions %}
+    <li class="list-group-item"><a href="{% url 'forum:question_detail' question.pk %}">{{ question.title }}</a></li>
+  {% empty %}
+    <li class="list-group-item">No questions yet.</li>
+  {% endfor %}
+</ul>
+{% endblock %}

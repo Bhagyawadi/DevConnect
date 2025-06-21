@@ -1,0 +1,44 @@
+{% extends 'base.html' %}
+{% block title %}{{ question.title }}{% endblock %}
+{% block content %}
+<h3>{{ question.title }}</h3>
+<p>{{ question.description }}</p>
+<p><small>Asked by {{ question.author.username }} on {{ question.created_at }}</small></p>
+
+<hr>
+<h4>Answers</h4>
+<ul class="list-group">
+  {% for answer in question.answers.all %}
+  <p>{{ answer.content }}</p>
+<p>
+  <form action="{% url 'forum:upvote' answer.pk %}" method="post" style="display: inline;">
+    {% csrf_token %}
+    <button class="btn btn-sm btn-success">⬆️</button>
+  </form>
+  {{ answer.score }}
+  <form action="{% url 'forum:downvote' answer.pk %}" method="post" style="display: inline;">
+    {% csrf_token %}
+    <button class="btn btn-sm btn-danger">⬇️</button>
+  </form>
+</p>
+
+    <li class="list-group-item">
+      <strong>{{ answer.author.username }}</strong>: {{ answer.content }}
+    </li>
+  {% empty %}
+    <li class="list-group-item">No answers yet.</li>
+  {% endfor %}
+</ul>
+
+{% if user.is_authenticated %}
+<form method="post" class="mt-4">
+  {% csrf_token %}
+  {{ form.as_p }}
+  <button class="btn btn-primary">Submit Answer</button>
+</form>
+{% else %}
+<p><a href="{% url 'accounts:login' %}">Login</a> to answer.</p>
+{% endif %}
+
+<a href="{% url 'forum:question_list' %}">← Back to Questions</a>
+{% endblock %}

@@ -1,0 +1,32 @@
+{% extends 'base.html' %}
+{% block title %}Forum{% endblock %}
+{% block content %}
+<nav>
+  <ul class="pagination mt-3">
+    {% if articles.has_previous %}
+      <li class="page-item">
+        <a class="page-link" href="?page={{ articles.previous_page_number }}{% if query %}&q={{ query }}{% endif %}">Previous</a>
+      </li>
+    {% endif %}
+    <li class="page-item active"><span class="page-link">{{ articles.number }}</span></li>
+    {% if articles.has_next %}
+      <li class="page-item">
+        <a class="page-link" href="?page={{ articles.next_page_number }}{% if query %}&q={{ query }}{% endif %}">Next</a>
+      </li>
+    {% endif %}
+  </ul>
+</nav>
+<h2>Developer Q&A</h2>
+<a href="{% url 'forum:question_create' %}" class="btn btn-success mb-3">Ask a Question</a>
+<ul class="list-group">
+  {% for question in questions %}
+  <form method="get" class="mb-3">
+    <input type="text" name="q" class="form-control" placeholder="Search..." value="{{ query }}">
+  </form>  
+    <li class="list-group-item">
+      <a href="{% url 'forum:question_detail' question.pk %}">{{ question.title }}</a>
+      <span class="text-muted">by {{ question.author.username }}</span>
+    </li>
+  {% endfor %}
+</ul>
+{% endblock %}
